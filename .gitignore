@@ -1,2 +1,7 @@
 assets/
 .DS_Store
+agents/service-account.json
+agents/config.json
+agents/.env
+__pycache__/
+*.pyc
