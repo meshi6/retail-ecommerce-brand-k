@@ -6,7 +6,7 @@ Key differentiator vs competitors: wider family proposition (vs Cheeky kids-only
 
 ## Competitors to research
 - Zara (Argentina) — premium fast fashion benchmark
-- Indian — main price competitor
+- Indian (indian.ar) — main price competitor
 - Renner — family fashion, price positioning
 - Le Utthe — women's fashion
 - Cuesta Blanca — young women's fashion
