@@ -13,7 +13,7 @@ If the list is empty, tell the user to add products first with /price-add.
 ### 2. Fetch and extract prices
 For each product in the list, use WebFetch on the product URL. From the fetched content:
 - Look for price in structured data (JSON-LD, meta tags), visible price text, or ARS/$ amounts near the product name
-- Extract the price in Argentine Pesos. Always prefix with "ARS" (e.g. "ARS 13.425", "ARS 37.425")
+- Extract the price in Argentine Pesos as a plain number with local formatting (e.g. "13.425", "37.425") — no currency prefix
 - If the page shows a discounted price, use the discounted (final) price
 - If the page cannot be fetched or price is not found, use "N/A"
 
@@ -28,8 +28,8 @@ For each product:
 Build the update payload as JSON — one object per product regardless of whether price changed:
 ```json
 [
-  {"row": 2, "current_price": "ARS 15.999", "delta_pct": "+5.2%"},
-  {"row": 3, "current_price": "ARS 37.425", "delta_pct": "new"}
+  {"row": 2, "current_price": "15.999", "delta_pct": "+5.2%"},
+  {"row": 3, "current_price": "37.425", "delta_pct": "new"}
 ]
 ```
 
