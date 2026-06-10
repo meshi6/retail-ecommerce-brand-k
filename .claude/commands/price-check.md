@@ -21,7 +21,7 @@ For each product in the list, use WebFetch on the product URL. From the fetched 
 For each product:
 - If current_price (stored) is empty or "N/A" → delta_pct = "new"
 - Otherwise, parse both prices numerically (strip ARS, $, dots, commas) and calculate:
-  delta_pct = ((new - old) / old * 100) formatted as "+5.2%" or "-3.1%"
+  delta_pct = ((new - old) / old * 100) formatted as "+5.2%" or "-3.1%" — strip trailing zeros (e.g. "-25%" not "-25.0%", "+7%" not "+7.0%")
 - If either price is N/A → delta_pct = "N/A"
 
 ### 4. Write updates to sheet
