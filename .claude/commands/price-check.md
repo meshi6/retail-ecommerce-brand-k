@@ -13,7 +13,8 @@ If the list is empty, tell the user to add products first with /price-add.
 ### 2. Fetch and extract prices
 For each product in the list, use WebFetch on the product URL. From the fetched content:
 - Look for price in structured data (JSON-LD, meta tags), visible price text, or ARS/$ amounts near the product name
-- Extract the price as a string including currency symbol and formatting (e.g. "ARS 15.999", "$ 12.990")
+- Extract the price in Argentine Pesos. Always prefix with "ARS" (e.g. "ARS 13.425", "ARS 37.425")
+- If the page shows a discounted price, use the discounted (final) price
 - If the page cannot be fetched or price is not found, use "N/A"
 
 ### 3. Calculate deltas
@@ -28,7 +29,7 @@ Build the update payload as JSON — one object per product regardless of whethe
 ```json
 [
   {"row": 2, "current_price": "ARS 15.999", "delta_pct": "+5.2%"},
-  {"row": 3, "current_price": "N/A", "delta_pct": "N/A"}
+  {"row": 3, "current_price": "ARS 37.425", "delta_pct": "new"}
 ]
 ```
 

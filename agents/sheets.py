@@ -38,12 +38,12 @@ def cmd_list():
     svc = _sheets()
     result = svc.spreadsheets().values().get(
         spreadsheetId=cfg["sheet_id"],
-        range=f"{SHEET_NAME}!A2:G",
+        range=f"{SHEET_NAME}!A2:H",
     ).execute()
     rows = result.get("values", [])
     out = []
     for i, row in enumerate(rows):
-        while len(row) < 7:
+        while len(row) < 8:
             row.append("")
         out.append({
             "row": i + 2,
@@ -52,8 +52,9 @@ def cmd_list():
             "url": row[2],
             "current_price": row[3],
             "last_price": row[4],
-            "last_checked": row[5],
-            "delta_pct": row[6],
+            "last_price_date": row[5],
+            "last_checked": row[6],
+            "delta_pct": row[7],
         })
     print(json.dumps(out, ensure_ascii=False, indent=2))
 
@@ -63,9 +64,9 @@ def cmd_add(name, competitor, url):
     svc = _sheets()
     svc.spreadsheets().values().append(
         spreadsheetId=cfg["sheet_id"],
-        range=f"{SHEET_NAME}!A:G",
+        range=f"{SHEET_NAME}!A:H",
         valueInputOption="USER_ENTERED",
-        body={"values": [[name, competitor, url, "", "", "", ""]]},
+        body={"values": [[name, competitor, url, "", "", "", "", ""]]},
     ).execute()
 
     result = svc.spreadsheets().values().get(
@@ -86,15 +87,17 @@ def cmd_update():
         row = u["row"]
         result = svc.spreadsheets().values().get(
             spreadsheetId=cfg["sheet_id"],
-            range=f"{SHEET_NAME}!D{row}",
+            range=f"{SHEET_NAME}!D{row}:G{row}",
         ).execute()
-        prev_price = (result.get("values") or [[""]])[0][0]
+        prev_row = (result.get("values") or [[]])[0]
+        prev_price = prev_row[0] if len(prev_row) > 0 else ""
+        prev_date = prev_row[3] if len(prev_row) > 3 else ""  # G (Last Checked) becomes Last Price Date
 
         svc.spreadsheets().values().update(
             spreadsheetId=cfg["sheet_id"],
-            range=f"{SHEET_NAME}!D{row}:G{row}",
+            range=f"{SHEET_NAME}!D{row}:H{row}",
             valueInputOption="USER_ENTERED",
-            body={"values": [[u["current_price"], prev_price, now, u.get("delta_pct", "")]]},
+            body={"values": [[u["current_price"], prev_price, prev_date, now, u.get("delta_pct", "")]]},
         ).execute()
 
     print(json.dumps({"updated": len(payload), "timestamp": now}))
